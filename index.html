@@ -8,15 +8,15 @@
 </head>
 <body>
     <div class="container">
-        <input type="text" id="shareText" placeholder="Entrez votre texte ici">
-        <button class="share-button" onclick="shareOnFacebook()">Partager sur Facebook</button>
+        <textarea id="shareText" placeholder="Entrez votre texte ici"></textarea>
+        <button class="share-button" onclick="partagerSurFacebook()">Partager sur Facebook</button>
     </div>
 
     <script>
-        function shareOnFacebook() {
+        function partagerSurFacebook() {
             var texte = encodeURIComponent(document.getElementById('shareText').value);
-            var url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href) + '&quote=' + texte;
-            window.open(url, '_blank', 'noopener,noreferrer');
+            var url = 'https://www.facebook.com/dialog/feed?app_id=YOUR_APP_ID&link=' + encodeURIComponent(window.location.href) + '&quote=' + texte + '&display=popup';
+            window.open(url, 'Partager sur Facebook', 'width=626,height=436');
         }
     </script>
 </body>
