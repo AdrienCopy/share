@@ -17,14 +17,15 @@
         function partagerSurFacebook() {
             var texte = encodeURIComponent(document.getElementById('shareText').value);
             console.log(texte);
-            //var url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href) + '&quote=' + texte;
-            var url = 'https://www.facebook.com/dialog/feed?app_id=YOUR_APP_ID&link=' + encodeURIComponent(window.location.href) + '&quote=' + texte + '&display=popup';
+            var url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href) + '&text=' + texte;
+            //var url = 'https://www.facebook.com/dialog/feed?app_id=YOUR_APP_ID&link=' + encodeURIComponent(window.location.href) + '&quote=' + texte + '&display=popup';
             window.open(url, 'Partager sur Facebook', 'width=626,height=436');
         }
             function partagerSurLinkedIn() {
             var texte = encodeURIComponent(document.getElementById('shareText').value);
-            var url = 'https://www.linkedin.com/shareArticle?mini=true&url=' + encodeURIComponent(window.location.href) + '&title=' + encodeURIComponent('Partage depuis mon site') + '&summary=' + texte;
-            window.open(url, 'Partager sur LinkedIn', 'width=626,height=436');
+            var url = 'https://www.linkedin.com/shareArticle?mini=true&url=' + encodeURIComponent(window.location.href) + '&text=' + texte;
+            console.log(url);
+            window.open(url, 'Partager sur LinkedIn', 'width=726,height=536');
         }
 
     </script>
