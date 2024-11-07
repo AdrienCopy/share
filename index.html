@@ -9,15 +9,24 @@
 <body>
     <div class="container">
         <textarea id="shareText" placeholder="Entrez votre texte ici"></textarea>
-        <button class="share-button" onclick="partagerSurFacebook()">Partager sur Facebook</button>
+        <button class="share-button facebook-button" onclick="partagerSurFacebook()">Partager sur Facebook</button>
+        <button class="share-button linkedin-button" onclick="partagerSurLinkedIn()">Partager sur LinkedIn</button>
     </div>
 
     <script>
         function partagerSurFacebook() {
             var texte = encodeURIComponent(document.getElementById('shareText').value);
-            var url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href) + '&quote=' + texte;
+            console.log(texte);
+            //var url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href) + '&quote=' + texte;
+            var url = 'https://www.facebook.com/dialog/feed?app_id=YOUR_APP_ID&link=' + encodeURIComponent(window.location.href) + '&quote=' + texte + '&display=popup';
             window.open(url, 'Partager sur Facebook', 'width=626,height=436');
         }
+            function partagerSurLinkedIn() {
+            var texte = encodeURIComponent(document.getElementById('shareText').value);
+            var url = 'https://www.linkedin.com/shareArticle?mini=true&url=' + encodeURIComponent(window.location.href) + '&title=' + encodeURIComponent('Partage depuis mon site') + '&summary=' + texte;
+            window.open(url, 'Partager sur LinkedIn', 'width=626,height=436');
+        }
+
     </script>
 </body>
 </html>
