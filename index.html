@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partager sur Facebook</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <input type="text" id="shareText" placeholder="Entrez votre texte ici">
+        <button class="share-button" onclick="shareOnFacebook()">Partager sur Facebook</button>
+    </div>
+
+    <script>
+        function shareOnFacebook() {
+            var texte = encodeURIComponent(document.getElementById('shareText').value);
+            var url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href) + '&quote=' + texte;
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+    </script>
+</body>
+</html>
