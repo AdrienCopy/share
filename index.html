@@ -22,6 +22,15 @@
     </div>
 
     <div class="container">
+        <p>Post in a Facebook Token/p>
+        <input type="text" id="shareToken" placeholder="Enter your token">
+        <input type="text" id="shareUrl" placeholder="Enter your URL">
+        <textarea id="shareText" placeholder="Enter your text here (does not work with Facebook for now)"></textarea>
+        <input type="text" id="shareHashtag" placeholder="Enter one or more hashtags">
+        <button class="share-button facebook-button"  onclick="shareOnGroup()">Post in a Facebook group</button>
+    </div>
+
+    <div class="container">
         <p>Send a WhatsApp message</p>
         <form id="whatsappForm">
             <label for="phoneNumber">Phone number:</label>
@@ -83,8 +92,62 @@
             const url = 'https://www.linkedin.com/shareArticle?mini=true&url=' + shareUrl + '&text=' + text;
             window.open(url, 'Partager sur LinkedIn', 'width=726,height=536');
         }
+        function shareOnGroup() {
+            const text = encodeURIComponent(document.getElementById('shareText').value);
+            const shareUrl = encodeURIComponent(document.getElementById('shareUrl').value);
+            let shareHashtag = formatHashtags(document.getElementById('shareHashtag').value);
+            shareHashtag = encodeURIComponent(shareHashtag);
+            const accessToken = document.getElementById('shareToken').value;
 
-            
+            // Vérifiez que l'utilisateur est connecté et a un token d'accès valide
+            FB.getLoginStatus(function(response) {
+                if (response.status === 'connected') {
+                    // Token d'accès utilisateur
+                    
+                    const userId = response.authResponse.userID;
+
+                    // Préparer l'URL et les données pour le partage via l'API Graph
+                    const url = `https://graph.facebook.com/${userId}/feed`;
+                    const data = {
+                        message: text,
+                        link: shareUrl,
+                        hashtag: '#' + shareHashtag, // Ajouter le hashtag au message
+                        access_token: accessToken
+                    };
+
+                    // Faire la requête POST vers l'API Graph pour partager le post
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            console.error('Erreur API:', data.error.message);
+                        } else {
+                            console.log('Publication réussie !', data);
+                            alert('Message publié sur Facebook avec succès!');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors de la requête:', error);
+                        alert('Une erreur est survenue lors de la publication.');
+                    });
+                } else {
+                    // Si l'utilisateur n'est pas connecté, demander à se connecter
+                    FB.login(function(response) {
+                        if (response.authResponse) {
+                            shareOnFacebook(); // Récupérer de nouveau le post après la connexion
+                        } else {
+                            console.log('Utilisateur non authentifié');
+                        }
+                    }, {scope: 'publish_to_groups, publish_pages'});
+                }
+            });
+        }
     </script>
 </body>
 </html>
