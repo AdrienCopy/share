@@ -3,28 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Partager sur Facebook</title>
+    <title>Share On</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id = "fb-root" ></div> <script async defer crossorigin = "anonymous" src = "https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v21.0&appId=917242613703669" ></script> 
     <div class="container">
+        <input type="text" id="shareUrl" placeholder="Entrez votre URL">
         <textarea id="shareText" placeholder="Entrez votre texte ici"></textarea>
-        <button class="share-button facebook-button" onclick="partagerSurFacebook()">Partager sur Facebook</button>
         <button class="share-button linkedin-button" onclick="partagerSurLinkedIn()">Partager sur LinkedIn</button>
+        <button class="share-button facebook-button" onclick="partagerSurFacebook()">Partager sur Facebook</button>
+        
     </div>
 
     <script>
         function partagerSurFacebook() {
-            var texte = encodeURIComponent(document.getElementById('shareText').value);
+            const texte = encodeURIComponent(document.getElementById('shareText').value);
+            const shareUrl = encodeURIComponent(document.getElementById('shareUrl').value)
+            document.querySelector('.share-button').setAttribute('data-href', shareUrl);
             console.log(texte);
-            //var url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href) + '&text=' + texte;
-            var url = 'https://www.facebook.com/dialog/feed?app_id=917242613703669&link=' + encodeURIComponent(window.location.href) + '&quote=' + texte + '&display=popup';
+            //const url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href) + '&text=' + texte;
+            const url = 'https://www.facebook.com/dialog/feed?app_id=917242613703669&link=' + shareUrl + '&quote=' + texte + '&display=popup';
             window.open(url, 'Partager sur Facebook', 'width=626,height=436');
         }
             function partagerSurLinkedIn() {
-            var texte = encodeURIComponent(document.getElementById('shareText').value);
-            var url = 'https://www.linkedin.com/shareArticle?mini=true&url=' + encodeURIComponent(window.location.href) + '&text=' + texte;
-            console.log(url);
+            const texte = encodeURIComponent(document.getElementById('shareText').value);
+            const shareUrl = encodeURIComponent(document.getElementById('shareUrl').value);
+            const url = 'https://www.linkedin.com/shareArticle?mini=true&url=' + shareUrl + '&text=' + texte;
             window.open(url, 'Partager sur LinkedIn', 'width=726,height=536');
         }
 
