@@ -51,32 +51,30 @@
 
                 document.getElementById('message').reset();
 
-            });
+        });
 
-        function shareOnFacebook() {
-            const text = encodeURIComponent(document.getElementById('shareText').value);
-            const shareUrl = encodeURIComponent(document.getElementById('shareUrl').value)
-            let shareHashtag = document.getElementById('shareHashtag').value;
-            shareHashtag = shareHashtag.replace(/ /g, '#');
-            if (shareHashtag && shareHashtag[0] !== '#') {
-                shareHashtag = '#' + shareHashtag;
-            }
-            shareHashtag = encodeURIComponent(shareHashtag);
-            document.querySelector('.share-button').setAttribute('data-href', shareUrl);
-            console.log(text);
-            //const url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href) + '&text=' + texte;
-            const url = 'https://www.facebook.com/dialog/feed?app_id=917242613703669&link=' + shareUrl + '&quote=' + text + '&hashtag=' + shareHashtag + '&display=popup';
-            window.open(url, 'Partager sur Facebook', 'width=626,height=436');
-        }
-
-        function shareOnLinkedIn() {
-            let shareHashtag = document.getElementById('shareHashtag').value;
-            shareHashtag = shareHashtag.split(' ').map(word => {
+        function formatHashtags(hashtags) {
+            return hashtags.split(' ').map(word => {
                 if (word && word[0] !== '#') {
                     return '#' + word;
                 }
                 return word;
             }).join(' ');
+        }  
+
+        function shareOnFacebook() {
+            const text = encodeURIComponent(document.getElementById('shareText').value);
+            const shareUrl = encodeURIComponent(document.getElementById('shareUrl').value)
+            let shareHashtag = formatHashtags(document.getElementById('shareHashtag').value);
+            shareHashtag = encodeURIComponent(shareHashtag);
+            document.querySelector('.share-button').setAttribute('data-href', shareUrl);
+            console.log(text);
+            const url = 'https://www.facebook.com/dialog/feed?app_id=917242613703669&link=' + shareUrl + '&quote=' + text + '&hashtag=' + shareHashtag + '&display=popup';
+            window.open(url, 'Partager sur Facebook', 'width=626,height=436');
+        }
+
+        function shareOnLinkedIn() {
+            let shareHashtag = formatHashtags(document.getElementById('shareHashtag').value);
             shareHashtag = encodeURIComponent(shareHashtag);
             const text = encodeURIComponent(document.getElementById('shareText').value) + ' ' + shareHashtag;
             const shareUrl = encodeURIComponent(document.getElementById('shareUrl').value);
