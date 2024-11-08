@@ -1,3 +1,3 @@
-# Test pour future projet
+# Test for Future Project
 
-Ce dépôt contient une structure de base HTML/CSS/JavaScript.
+This repository contains a basic structure of HTML/CSS/JavaScript.
