@@ -9,30 +9,84 @@
 <body>
     <div id = "fb-root" ></div> <script async defer crossorigin = "anonymous" src = "https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v21.0&appId=917242613703669" ></script> 
     <div class="container">
-        <input type="text" id="shareUrl" placeholder="Entrez votre URL">
-        <textarea id="shareText" placeholder="Entrez votre texte ici"></textarea>
-        <button class="share-button linkedin-button" onclick="partagerSurLinkedIn()">Partager sur LinkedIn</button>
-        <button class="share-button facebook-button" onclick="partagerSurFacebook()">Partager sur Facebook</button>
+        <p>Test page for future project</p>
+    </div>
+    
+    <div class="container">
+        <input type="text" id="shareUrl" placeholder="Enter your URL">
+        <textarea id="shareText" placeholder="Enter your text here (does not work with Facebook for now)"></textarea>
+        <input type="text" id="shareHashtag" placeholder="Enter one or more hashtags">
+        <button class="share-button linkedin-button" onclick="shareOnLinkedIn()">Share on LinkedIn</button>
+        <button class="share-button facebook-button" onclick="shareOnFacebook()">Share on Facebook</button>
         
     </div>
 
+    <div class="container">
+        <p>Send a WhatsApp message</p>
+        <form id="whatsappForm">
+            <label for="phoneNumber">Phone number:</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="+1234567890" required>
+            
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" placeholder="Your message here... you will then be redirected to WhatsApp" required></textarea>
+            
+            <button type="submit" class="whatsapp-button">Send message</button>
+        </form>
+        <div id="status"></div>
+    </div>
+
+
     <script>
+        document.getElementById('whatsappForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                var phoneNumber = document.getElementById('phoneNumber').value;
+                var message = document.getElementById('message').value;
+                var statusDiv = document.getElementById('status');
+
+                var encodedMessage = encodeURIComponent(message);
+                var encodedPhoneNumber = phoneNumber.replace(/\s+/g, '');
+                var whatsappUrl = `https://wa.me/${encodedPhoneNumber}?text=${encodedMessage}`;
+
+                window.open(whatsappUrl, '_blank');
+
+                document.getElementById('message').reset();
+
+            });
+
         function partagerSurFacebook() {
-            const texte = encodeURIComponent(document.getElementById('shareText').value);
+            const text = encodeURIComponent(document.getElementById('shareText').value);
             const shareUrl = encodeURIComponent(document.getElementById('shareUrl').value)
+            let shareHashtag = document.getElementById('shareHashtag').value;
+            shareHashtag = shareHashtag.replace(/ /g, '#');
+            if (shareHashtag && shareHashtag[0] !== '#') {
+                shareHashtag = '#' + shareHashtag;
+            }
+            shareHashtag = encodeURIComponent(shareHashtag);
             document.querySelector('.share-button').setAttribute('data-href', shareUrl);
-            console.log(texte);
+            console.log(text);
             //const url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href) + '&text=' + texte;
-            const url = 'https://www.facebook.com/dialog/feed?app_id=917242613703669&link=' + shareUrl + '&quote=' + texte + '&display=popup';
+            const url = 'https://www.facebook.com/dialog/feed?app_id=917242613703669&link=' + shareUrl + '&quote=' + text + '&hashtag=' + shareHashtag + '&display=popup';
             window.open(url, 'Partager sur Facebook', 'width=626,height=436');
         }
-            function partagerSurLinkedIn() {
-            const texte = encodeURIComponent(document.getElementById('shareText').value);
+
+        function partagerSurLinkedIn() {
+            let shareHashtag = document.getElementById('shareHashtag').value;
+            shareHashtag = shareHashtag.split(' ').map(word => {
+                if (word && word[0] !== '#') {
+                    return '#' + word;
+                }
+                return word;
+            }).join(' ');
+            shareHashtag = encodeURIComponent(shareHashtag);
+            const text = encodeURIComponent(document.getElementById('shareText').value) + ' ' + shareHashtag;
             const shareUrl = encodeURIComponent(document.getElementById('shareUrl').value);
-            const url = 'https://www.linkedin.com/shareArticle?mini=true&url=' + shareUrl + '&text=' + texte;
+            console.log(text);
+
+            const url = 'https://www.linkedin.com/shareArticle?mini=true&url=' + shareUrl + '&text=' + text;
             window.open(url, 'Partager sur LinkedIn', 'width=726,height=536');
         }
 
+            
     </script>
 </body>
 </html>
